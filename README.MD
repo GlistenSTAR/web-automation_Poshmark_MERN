@@ -4,7 +4,7 @@
 
 This will allow a user to enter their information on your website and once they click the “sign up” button, we’ll automatically fill in all that information on Poshmark’s signup page: [https://poshmark.com/signup](https://poshmark.com/signup)
 
-![Screen Shot 2021-12-31 at 5.54.00 PM.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/02456119-22c3-4695-b0bd-04b044edf2f8/Screen_Shot_2021-12-31_at_5.54.00_PM.png)
+![Screen Shot 2021-12-31 at 5.54.00 PM.png](https://joinflyp.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F02456119-22c3-4695-b0bd-04b044edf2f8%2FScreen_Shot_2021-12-31_at_5.54.00_PM.png?table=block&id=5489f3b0-d565-43c5-b814-b4a269a47000&spaceId=35a37d52-2370-4eed-994c-1b254e2b8ea3&width=580&userId=&cache=v2)
 
 - Create a webpage with the following fields
     - First Name
@@ -42,7 +42,7 @@ Examples:
     - Number of listings
     - Profile pic (load the photo)
         
-        ![Screen Shot 2021-12-31 at 5.52.10 PM.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/65851998-9378-41df-91ba-608940efcc69/Screen_Shot_2021-12-31_at_5.52.10_PM.png)
+        ![Screen Shot 2021-12-31 at 5.52.10 PM.png](https://joinflyp.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F65851998-9378-41df-91ba-608940efcc69%2FScreen_Shot_2021-12-31_at_5.52.10_PM.png?table=block&id=a9c67b3c-009f-4332-9120-bcaf01bf9c4b&spaceId=35a37d52-2370-4eed-994c-1b254e2b8ea3&width=670&userId=&cache=v2)
         
 - Make sure to validate the Poshmark URL before attempting to scrape the data
 - Don’t spend time on UI, it’s more important to retrieve the data that how you display it for now
