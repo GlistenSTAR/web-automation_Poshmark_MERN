@@ -1,17 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-
-const users = require('./routes/api/users');
-
+const cors = require('cors')
+const users = require('./api/users');
 const app = express();
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+var whitelist = ['http://localhost:3000'];
+// var whitelist = ['https://ildexpert.herokuapp.com'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'PUT', 'POST', 'OPTIONS', 'DELETE']
+}
 
-// Passport Config
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Use Routes
 app.use('/api/users', users);
