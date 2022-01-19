@@ -1,0 +1,27 @@
+{
+  "name": "web-automation",
+  "version": "1.0.0",
+  "description": "web-automation backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "test"
+  },
+  "keywords": [
+    "Web automation using node.js"
+  ],
+  "author": "lionheart",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.2",
+    "puppeteer": "^13.1.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
