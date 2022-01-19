@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Box, Button, Container, Grid, InputLabel, TextField, MenuItem, FormControl, Select } from '@mui/material';
+import { Box, Button, Container, Grid, InputLabel, TextField, MenuItem, FormControl, Select, Formik } from '@mui/material';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
@@ -10,6 +10,13 @@ const Dashboard = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
+        first_name:'',
+        second_name:'',
+        email:'',
+        username:'',
+        password:'',
+        gender:'',
+        country:''
     },
     validationSchema: Yup.object({
       first_name:Yup
@@ -42,10 +49,14 @@ const Dashboard = () => {
       gender: Yup
         .string()
         .required(
-          'Select The Gender')
+          'Select The Gender'),
+      gender: Yup
+        .string()
+        .required(
+            'Select The Country')
     }),
-    onSubmit: () => {
-      router.push('/');
+    onSubmit: (values) => {
+        console.log(values)
     }
   });
 
@@ -56,6 +67,7 @@ const Dashboard = () => {
           SignUp Poshmark | Material Kit
         </title>
       </Head>
+
       <Box
         component="main"
         sx={{
@@ -64,151 +76,153 @@ const Dashboard = () => {
         }}
       >
         <Container maxWidth={false}>
-          <Grid
-            container
-            spacing={3}
-          >
+          <form onSubmit={formik.handleSubmit}>
             <Grid
-              item
-              lg={6}
-              sm={6}
-              xl={6}
-              xs={12}
+                container
+                spacing={3}
             >
-              <h1 style={{margin:'20px'}}>Sign Up On Poshmark</h1>
-              <TextField
-                error={Boolean(formik.touched.first_name && formik.errors.first_name)}
-                fullWidth
-                helperText={formik.touched.first_name && formik.errors.first_name}
-                label="First Name"
-                margin="normal"
-                name="first_name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type="text"
-                value={formik.values.first_name}
-                variant="outlined"
-              />
-              <TextField
-                error={Boolean(formik.touched.second_name && formik.errors.second_name)}
-                fullWidth
-                helperText={formik.touched.second_name && formik.errors.second_name}
-                label="Second Name"
-                margin="normal"
-                name="second_name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type="text"
-                value={formik.values.second_name}
-                variant="outlined"
-              />
-              <TextField
-                error={Boolean(formik.touched.email && formik.errors.email)}
-                fullWidth
-                helperText={formik.touched.email && formik.errors.email}
-                label="Email Address"
-                margin="normal"
-                name="email"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type="email"
-                value={formik.values.email}
-                variant="outlined"
-              />
-              <TextField
-                error={Boolean(formik.touched.username && formik.errors.username)}
-                fullWidth
-                helperText={formik.touched.username && formik.errors.username}
-                label="User Name"
-                margin="normal"
-                name="username"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type="text"
-                value={formik.values.username}
-                variant="outlined"
-              />
-              <TextField
-                error={Boolean(formik.touched.password && formik.errors.password)}
-                fullWidth
-                helperText={formik.touched.password && formik.errors.password}
-                label="Password"
-                margin="normal"
-                name="password"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type="password"
-                value={formik.values.password}
-                variant="outlined"
-              />
-              <FormControl fullWidth margin='normal'>
-                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={formik.values.gender}
-                  label="Gender"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  margin="normal"
-                >
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="unspecified">Unspecified</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth margin='normal'>
-                <InputLabel id="demo-simple-select-label">Country</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={formik.values.country}
-                  label="Gountry"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  margin="normal"
-                >
-                  <MenuItem value="us">United States</MenuItem>
-                  <MenuItem value="ca">Canada</MenuItem>
-                  <MenuItem value="au">Australia</MenuItem>
-                  <MenuItem value="in">India</MenuItem>
-                </Select>
-              </FormControl>
-              <Box sx={{ py: 2 }} >
-                <Button
-                  color="primary"
-                  disabled={formik.isSubmitting}
+              <Grid
+                item
+                lg={6}
+                sm={6}
+                xl={6}
+                xs={12}
+              >
+                <h1 style={{margin:'20px'}}>Sign Up On Poshmark</h1>
+                <TextField
+                  error={Boolean(formik.touched.first_name && formik.errors.first_name)}
                   fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  Sign Up Now
-                </Button>
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xl={6}
-              lg={6}
-              sm={6}
-              xs={12}
-            >
-              <Box sx={{ textAlign: 'center' }}>
-                <img
-                  alt="Under development"
-                  src="/static/images/signup.png"
-                  style={{
-                    marginTop: 0,
-                    display: 'inline-block',
-                    maxWidth: '100%',
-                    width: 560,
-                    height: 800
-                  }}
+                  helperText={formik.touched.first_name && formik.errors.first_name}
+                  label="First Name"
+                  margin="normal"
+                  name="first_name"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="text"
+                  value={formik.values.first_name}
+                  variant="outlined"
                 />
-              </Box>
+                <TextField
+                  error={Boolean(formik.touched.second_name && formik.errors.second_name)}
+                  fullWidth
+                  helperText={formik.touched.second_name && formik.errors.second_name}
+                  label="Second Name"
+                  margin="normal"
+                  name="second_name"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="text"
+                  value={formik.values.second_name}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(formik.touched.email && formik.errors.email)}
+                  fullWidth
+                  helperText={formik.touched.email && formik.errors.email}
+                  label="Email Address"
+                  margin="normal"
+                  name="email"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="email"
+                  value={formik.values.email}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(formik.touched.username && formik.errors.username)}
+                  fullWidth
+                  helperText={formik.touched.username && formik.errors.username}
+                  label="User Name"
+                  margin="normal"
+                  name="username"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="text"
+                  value={formik.values.username}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(formik.touched.password && formik.errors.password)}
+                  fullWidth
+                  helperText={formik.touched.password && formik.errors.password}
+                  label="Password"
+                  margin="normal"
+                  name="password"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="password"
+                  value={formik.values.password}
+                  variant="outlined"
+                />
+                <FormControl fullWidth margin='normal'>
+                  <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="gender"
+                    value={formik.values.gender}
+                    label="Gender"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="gender"
+                  >
+                    <MenuItem value="male">Male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="unspecified">Unspecified</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth margin='normal'>
+                  <InputLabel id="demo-simple-select-label">Country</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="country"
+                    value={formik.values.country}
+                    label="Country"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="country"
+                  >
+                    <MenuItem value="us">United States</MenuItem>
+                    <MenuItem value="ca">Canada</MenuItem>
+                    <MenuItem value="au">Australia</MenuItem>
+                    <MenuItem value="in">India</MenuItem>
+                  </Select>
+                </FormControl>
+                <Box sx={{ py: 2 }} >
+                  <Button
+                    color="primary"
+                    disabled={formik.isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                  >
+                    Sign Up Now
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid
+                item
+                xl={6}
+                lg={6}
+                sm={6}
+                xs={12}
+              >
+                <Box sx={{ textAlign: 'center' }}>
+                  <img
+                    alt="Under development"
+                    src="/static/images/signup.png"
+                    style={{
+                      marginTop: 0,
+                      display: 'inline-block',
+                      maxWidth: '100%',
+                      width: 560,
+                      height: 800
+                    }}
+                  />
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
+          </form>
         </Container>
       </Box>
     </>
