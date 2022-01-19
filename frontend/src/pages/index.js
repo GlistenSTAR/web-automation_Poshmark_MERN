@@ -4,19 +4,20 @@ import { DashboardLayout } from '../components/dashboard-layout';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import axios from 'axios'
+import { BACKEND_URL } from '../utils/base.js'
 
 const Dashboard = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-        first_name:'',
-        second_name:'',
-        email:'',
-        username:'',
-        password:'',
-        gender:'',
-        country:''
+        first_name:'a',
+        second_name:'a',
+        email:'a@a.co',
+        username:'a',
+        password:'a',
+        gender:'male',
+        country:'us'
     },
     validationSchema: Yup.object({
       first_name:Yup
@@ -50,16 +51,21 @@ const Dashboard = () => {
         .string()
         .required(
           'Select The Gender'),
-      gender: Yup
+      country: Yup
         .string()
         .required(
             'Select The Country')
     }),
     onSubmit: (values) => {
-        console.log(values)
+        axios.post(`${BACKEND_URL}/api/users/register`, values)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err =>
+            console.log(err)
+          )
     }
   });
-
   return (
     <>
       <Head>
