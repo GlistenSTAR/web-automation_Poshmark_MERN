@@ -219,7 +219,7 @@ const Dashboard = () => {
                     src="/static/images/signup.png"
                     style={{
                       marginTop: 0,
-                      display: 'inline-block',
+                      display: "inline-block",
                       maxWidth: '100%',
                       width: 560,
                       height: 800
