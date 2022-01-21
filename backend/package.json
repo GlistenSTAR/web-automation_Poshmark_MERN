@@ -17,6 +17,7 @@
     "body-parser": "^1.19.1",
     "cheerio": "^1.0.0-rc.10",
     "chrome-launcher": "^0.15.0",
+    "concurrently": "^7.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "opn": "^6.0.0",
