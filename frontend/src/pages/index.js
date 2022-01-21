@@ -16,7 +16,7 @@ const Dashboard = () => {
         email:'a@a.co',
         username:'a',
         password:'a',
-        gender:'male',
+        gender:'Male',
         country:'us'
     },
     validationSchema: Yup.object({
@@ -171,9 +171,9 @@ const Dashboard = () => {
                     onBlur={formik.handleBlur}
                     name="gender"
                   >
-                    <MenuItem value="male">Male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
-                    <MenuItem value="unspecified">Unspecified</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Unspecified">Unspecified</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin='normal'>
@@ -219,7 +219,7 @@ const Dashboard = () => {
                     src="/static/images/signup.png"
                     style={{
                       marginTop: 0,
-                      display: "inline-block",
+                      display: 'inline-block',
                       maxWidth: '100%',
                       width: 560,
                       height: 800
