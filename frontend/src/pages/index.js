@@ -8,15 +8,14 @@ import axios from 'axios'
 import { BACKEND_URL } from '../utils/base.js'
 
 const Dashboard = () => {
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
-        first_name:'a',
-        second_name:'a',
-        email:'a@a.co',
-        username:'a',
-        password:'a',
-        gender:'Male',
+        first_name:'glisten',
+        second_name:'star',
+        email:'abc@gmail.com',
+        username:'glisten',
+        password:'**lionheart**!',
+        gender:'ma',
         country:'us'
     },
     validationSchema: Yup.object({
@@ -171,9 +170,9 @@ const Dashboard = () => {
                     onBlur={formik.handleBlur}
                     name="gender"
                   >
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                    <MenuItem value="Unspecified">Unspecified</MenuItem>
+                    <MenuItem value="ma">Male</MenuItem>
+                    <MenuItem value="fe">Female</MenuItem>
+                    <MenuItem value="un">Unspecified</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl fullWidth margin='normal'>

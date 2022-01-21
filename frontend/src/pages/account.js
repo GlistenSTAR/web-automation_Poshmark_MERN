@@ -1,27 +1,43 @@
 import Head from 'next/head';
 import { Box, Container, Grid, Typography, TextField, Button } from '@mui/material';
-import { AccountProfile } from '../components/account/account-profile';
-import { AccountProfileDetails } from '../components/account/account-profile-details';
 import { DashboardLayout } from '../components/dashboard-layout';
-import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios'
+import { BACKEND_URL } from '../utils/base.js'
 
 const Account = () => {
+  const isValidUrl = (url) => {
+    try {
+        return url.includes("https://www.poshmark.com/closet/") 
+                || url.includes("https://poshmark.com/closet/") 
+                || url.includes("https://posh.mk/") 
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
 
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
+      url:''
     },
     validationSchema: Yup.object({
       url:Yup
-      .string()
-      .max(255)
+        .string()
+        .max(255)
         .required(
           'Url is required')
+        .test('is-url-valid', 'URL is not valid', (value) => isValidUrl(value)),
     }),
-    onSubmit: () => {
-      router.push('/');
+    onSubmit: (values) => {
+      axios.post(`${BACKEND_URL}/api/users/getUserInfo`, values)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err =>
+            console.log(err)
+          )
     }
   });
 
@@ -39,52 +55,53 @@ const Account = () => {
           py: 8
         }}
       >
-        <Container maxWidth="lg">
-          <Typography
-            sx={{ mb: 3 }}
-            variant="h4"
-          >
-            Get UserInfo
-          </Typography>
-          <Box
-            sx={{
-              alignItems: 'center',
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              m: -1
-            }}
-          >
+        <form onSubmit={formik.handleSubmit}>
+          <Container maxWidth="lg">
             <Typography
-              sx={{ width:'80%'}}
-              variant="h6"
+              sx={{ mb: 3 }}
+              variant="h4"
             >
-              <TextField
-                error={Boolean(formik.touched.url && formik.errors.url)}
-                fullWidth
-                helperText={formik.touched.url && formik.errors.url}
-                label="Url://"
-                margin="normal"
-                name="url"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type="text"
-                value={formik.values.url}
-                variant="outlined"
-              />
+              Get UserInfo
             </Typography>
-            <Box sx={{ m: 1 }}>
-              <Button
-                color="primary"
-                variant="contained"
-                size="large"
+            <Box
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                m: -1
+              }}
+            >
+              <Typography
+                sx={{ width:'80%'}}
+                variant="h6"
               >
-                Get Info
-              </Button>
+                <TextField
+                  error={Boolean(formik.touched.url && formik.errors.url)}
+                  fullWidth
+                  helperText={formik.touched.url && formik.errors.url}
+                  label="Url://"
+                  margin="normal"
+                  name="url"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="text"
+                  value={formik.values.url}
+                  variant="outlined"
+                  placeholder='Please write the poshmark account url.'
+                />
+              </Typography>
+              <Box sx={{ m: 1 }}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="large"
+                  type='submit'
+                >
+                  Get Info
+                </Button>
+              </Box>
             </Box>
-          </Box>
-          
-        </Container>
+          </Container>
+        </form>          
       </Box>
     </>
 )};
