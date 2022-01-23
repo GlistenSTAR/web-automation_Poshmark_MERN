@@ -1,3 +1,16 @@
+## How to
+Open the termial
+```
+cd frontend
+npm i
+cd ../backend
+npm i
+npm i -g concurrently
+cd ..
+npm run dev
+```
+
+
 # The project consists of 2 web pages
 
 ### Page 1 - Web Automation: Poshmark Sign Up 💁‍♂️
