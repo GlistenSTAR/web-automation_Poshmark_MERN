@@ -5,8 +5,18 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
 import { BACKEND_URL } from '../utils/base.js'
+import { useState } from 'react';
+import ResultTable from '../components/result-table'
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const Account = () => {
+  const [image, setImage] = useState("")
+  const [name, setName] = useState('')
+  const [list, setList] = useState('')
+  const [msg, setMsg] = useState('')
+  const [open, isOpen] = useState(false)
+
   const isValidUrl = (url) => {
     try {
         return url.includes("https://www.poshmark.com/closet/") 
@@ -33,13 +43,21 @@ const Account = () => {
     onSubmit: (values) => {
       axios.post(`${BACKEND_URL}/api/users/getUserInfo`, values)
           .then(res => {
-            console.log(res)
+            isOpen(true)
+            setImage(res.data.image)
+            setName(res.data.name)
+            setList(res.data.listing)
+            setMsg(res.data.msg)
           })
           .catch(err =>
             console.log(err)
           )
     }
   });
+
+  const handleClose = (event, reason) => {
+    isOpen(false);
+  };
 
   return (
     <>
@@ -101,7 +119,27 @@ const Account = () => {
               </Box>
             </Box>
           </Container>
-        </form>          
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              {msg ? msg : ''}
+            </Alert>
+          </Snackbar>
+
+        </form> 
+        {image ? (
+          <Box
+          component="main"
+            sx={{
+              flexGrow: 1,
+              py: 8,
+              mx: 5
+            }}
+          >
+            <ResultTable image={image} name={name} list={list}/>
+          </Box>
+        )
+          :
+        ''}
       </Box>
     </>
 )};
