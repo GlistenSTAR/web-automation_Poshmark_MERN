@@ -13,11 +13,12 @@ router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 // @access  Public
 router.post('/register', async (req, res) => {
     let { first_name, second_name, email, username, password, gender, country } = req.body;
+
     try{
         console.log("starting scraping......")
         let browser = await browserObject.startBrowser();
-        let page = await browser.newPage();
-
+        let page = await browser.pages();
+        page = page[0]    
         await page.setDefaultNavigationTimeout(0);
         await page.goto("https://poshmark.com/signup");
 
@@ -65,17 +66,14 @@ router.post('/register', async (req, res) => {
             })
         }
 
-        await Promise.all([
-            page.click('#content > div > div > div.p--v--5 > div.pm-form > form > div.form__actions.signup__footer > button'),
-            page.waitForNavigation(),
-        ]).then(()=>{
-            return {msg : "Successfully registed!"}
-        }).catch((err) => console.log(err));
+        await page.click('#content > div > div > div.p--v--5 > div.pm-form > form > div.form__actions.signup__footer > button')
 
+        await page.setDefaultNavigationTimeout(0);
         await page.close();
-
+        data = {"msg" : "Sussufully registered."}
+        res.json(data);
     } catch (error) {
-        console.error(error)
+        console.log(error)
     }
 });
 
@@ -88,26 +86,25 @@ router.post('/getUserInfo', async (req, res) =>{
     try{
         console.log("starting scraping......")
         let browser = await browserObject.startBrowser();
-        let page = await browser.newPage();
+        let page = await browser.pages();
+        page = page[0]    
 
         await page.setDefaultNavigationTimeout(0);
         await page.goto(url);
-
-        error = await page.$eval('#content > div > div:nth-child(2) > h1', h1 => h1 )
-        
-        if( error.contains("The page you are looking for could not be found")){
-            return { msg : "The page you are looking for could not be found"}
+        try{
+            error = await page.$eval('#content > div > div:nth-child(2) > h1', h1 => h1.textContent )
+            if( error.contains("The page you are looking for could not be found")){
+                return { msg : "The page you are looking for could not be found"}
+            }
+        } catch(err){
+            data["image"] = await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.d--fl.jc--fe.ai--fe.col-l5.col-x6 > div > img', img => img.src)
+            data["name"] = await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.col-l19.col-x18 > div > h1 > span.ellipses', span => span.textContent) + " " + await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.col-l19.col-x18 > div > h1 > span.m--l--2', span => span.textContent)
+            listing = await page.$eval('#content > div > div.m--b--5 > div > div.closet__header__info__user-details__container__full-width > div > div.d--fl.jc--sb.col-x24.col-l19 > nav > ul > li:nth-child(1) > a ', a => a.textContent.trim())
+            data["listing"] = listing.split(" ")[0].trim()
+            data["msg"] = "Successfully get user infos"
+            await page.close();
+            res.json(data)
         }
-        
-        data["image"] = await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.d--fl.jc--fe.ai--fe.col-l5.col-x6 > div > img', img => img.src)
-        data["name"] = await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.col-l19.col-x18 > div > h1 > span.ellipses', span => span.textContent) + " " + await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.col-l19.col-x18 > div > h1 > span.m--l--2', span => span.textContent)
-        listing = await page.$eval('#content > div > div.m--b--5 > div > div.closet__header__info__user-details__container__full-width > div > div.d--fl.jc--sb.col-x24.col-l19 > nav > ul > li:nth-child(1) > a ', a => a.textContent.trim())
-        data["listing"] = listing.split(" ")[0].trim()
-        
-        resolve(data);
-        await page.close();
-        return { data, msg:"Successfully get user infos"}
-        
     } catch (err){
         console.log(err)
     }
