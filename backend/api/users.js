@@ -14,11 +14,11 @@ router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 router.post('/register', async (req, res) => {
     let { first_name, second_name, email, username, password, gender, country } = req.body;
 
-    try{
+    try {
         console.log("starting scraping......")
         let browser = await browserObject.startBrowser();
         let page = await browser.pages();
-        page = page[0]    
+        page = page[0]
         await page.setDefaultNavigationTimeout(0);
         await page.goto("https://poshmark.com/signup");
 
@@ -27,39 +27,39 @@ router.post('/register', async (req, res) => {
         await page.type('#email', email)
         await page.type('#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(3) > input', username)
         await page.type('#password', password)
-        
-        if(gender == "ma"){
+
+        if (gender == "ma") {
             await page.evaluate(() => {
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(1)").className = "dropdown__menu__item"
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(2)").className = "dropdown__menu__item--selected dropdown__menu__item"
             });
         }
-        if(gender == "fe"){
+        if (gender == "fe") {
             await page.evaluate(() => {
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(1)").className = "dropdown__menu__item"
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(3)").className = "dropdown__menu__item--selected dropdown__menu__item"
             })
         }
-        if(gender == "un"){
+        if (gender == "un") {
             await page.evaluate(() => {
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(1)").className = "dropdown__menu__item"
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(4)").className = "dropdown__menu__item--selected dropdown__menu__item"
             })
         }
 
-        if(country == "ca"){
+        if (country == "ca") {
             await page.evaluate(() => {
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(1)").className = "dropdown__menu__item"
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(2)").className = "dropdown__menu__item--selected dropdown__menu__item--highlighted dropdown__menu__item"
             })
         }
-        if(country == "au"){
+        if (country == "au") {
             await page.evaluate(() => {
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(1)").className = "dropdown__menu__item"
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(3)").className = "dropdown__menu__item--selected dropdown__menu__item--highlighted dropdown__menu__item"
             })
         }
-        if(country == "in"){
+        if (country == "in") {
             await page.evaluate(() => {
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(1)").className = "dropdown__menu__item"
                 document.querySelector("#content > div > div > div.p--v--5 > div.pm-form > form > div:nth-child(5) > div > div:nth-child(2) > ul > li:nth-child(4)").className = "dropdown__menu__item--selected dropdown__menu__item--highlighted dropdown__menu__item"
@@ -70,7 +70,7 @@ router.post('/register', async (req, res) => {
 
         await page.setDefaultNavigationTimeout(0);
         await page.close();
-        data = {"msg" : "Sussufully registered."}
+        data = { "msg": "Sussufully registered." }
         res.json(data);
     } catch (error) {
         console.log(error)
@@ -80,23 +80,23 @@ router.post('/register', async (req, res) => {
 // @route   POST api/users/getUserInfo
 // @desc    get user infos
 // @access  Public
-router.post('/getUserInfo', async (req, res) =>{
+router.post('/getUserInfo', async (req, res) => {
     let { url } = req.body
     let data = {}, listing, error
-    try{
+    try {
         console.log("starting scraping......")
         let browser = await browserObject.startBrowser();
         let page = await browser.pages();
-        page = page[0]    
+        page = page[0]
 
         await page.setDefaultNavigationTimeout(0);
         await page.goto(url);
-        try{
-            error = await page.$eval('#content > div > div:nth-child(2) > h1', h1 => h1.textContent )
-            if( error.contains("The page you are looking for could not be found")){
-                return { msg : "The page you are looking for could not be found"}
+        try {
+            error = await page.$eval('#content > div > div:nth-child(2) > h1', h1 => h1.textContent)
+            if (error.contains("The page you are looking for could not be found")) {
+                return { msg: "The page you are looking for could not be found" }
             }
-        } catch(err){
+        } catch (err) {
             data["image"] = await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.d--fl.jc--fe.ai--fe.col-l5.col-x6 > div > img', img => img.src)
             data["name"] = await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.col-l19.col-x18 > div > h1 > span.ellipses', span => span.textContent) + " " + await page.$eval('#content > div > div.m--b--5 > div > div.ps--r > div.closet__header__info > div > div.col-l19.col-x18 > div > h1 > span.m--l--2', span => span.textContent)
             listing = await page.$eval('#content > div > div.m--b--5 > div > div.closet__header__info__user-details__container__full-width > div > div.d--fl.jc--sb.col-x24.col-l19 > nav > ul > li:nth-child(1) > a ', a => a.textContent.trim())
@@ -105,7 +105,7 @@ router.post('/getUserInfo', async (req, res) =>{
             await page.close();
             res.json(data)
         }
-    } catch (err){
+    } catch (err) {
         console.log(err)
     }
 });
