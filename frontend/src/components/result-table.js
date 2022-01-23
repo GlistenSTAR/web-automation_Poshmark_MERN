@@ -28,11 +28,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function createData(avatar, name, list) {
-  return { avatar, name, list};
+  return { avatar, name, list };
 }
 
 
-export default function ResultTable({image, name, list}) {
+export default function ResultTable({ image, name, list }) {
   const rows = [
     createData(image, name, list)
   ];
@@ -51,7 +51,7 @@ export default function ResultTable({image, name, list}) {
           {rows.map((row) => (
             <StyledTableRow key={row.avatar}>
               <StyledTableCell component="th" scope="row">
-                <img src={row.avatar} width="150" height="150"/>
+                <img src={row.avatar} width="150" height="150" />
               </StyledTableCell>
               <StyledTableCell>{row.name}</StyledTableCell>
               <StyledTableCell>{row.list}</StyledTableCell>
