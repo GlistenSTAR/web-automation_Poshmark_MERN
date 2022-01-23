@@ -1,22 +1,27 @@
 import Head from 'next/head';
 import { Box, Button, Container, Grid, InputLabel, TextField, MenuItem, FormControl, Select, Formik } from '@mui/material';
 import { DashboardLayout } from '../components/dashboard-layout';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
 import { BACKEND_URL } from '../utils/base.js'
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const Dashboard = () => {
+  const [open, isOpen] = useState(false)
+  const [message, setMsg] = useState('')
+
   const formik = useFormik({
     initialValues: {
-        first_name:'glisten',
-        second_name:'star',
-        email:'abc@gmail.com',
-        username:'glisten',
-        password:'**lionheart**!',
-        gender:'ma',
-        country:'us'
+        first_name:'',
+        second_name:'',
+        email:'',
+        username:'',
+        password:'',
+        gender:'',
+        country:''
     },
     validationSchema: Yup.object({
       first_name:Yup
@@ -58,13 +63,19 @@ const Dashboard = () => {
     onSubmit: (values) => {
         axios.post(`${BACKEND_URL}/api/users/register`, values)
           .then(res => {
-            console.log(res)
+            setMsg(res.data.msg)
+            isOpen(true)
           })
           .catch(err =>
             console.log(err)
           )
     }
   });
+
+  const handleClose = (event, reason) => {
+    isOpen(false);
+  };
+
   return (
     <>
       <Head>
@@ -195,7 +206,6 @@ const Dashboard = () => {
                 <Box sx={{ py: 2 }} >
                   <Button
                     color="primary"
-                    disabled={formik.isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -228,6 +238,12 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </form>
+
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              {message?message:''}
+            </Alert>
+          </Snackbar>
         </Container>
       </Box>
     </>
