@@ -19,7 +19,7 @@
     "chrome-launcher": "^0.15.0",
     "concurrently": "^7.0.0",
     "cors": "^2.8.5",
-    "express": "^4.17.2",
+    "express": "^4.17.3",
     "opn": "^6.0.0",
     "puppeteer": "^13.1.1",
     "request": "^2.88.2",
